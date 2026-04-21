@@ -1,3 +1,9 @@
+package importer;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Service;
+
 @Service
 public class DatabaseService {
 
@@ -5,7 +11,6 @@ public class DatabaseService {
     private JdbcTemplate jdbcTemplate;
 
     public void upsert(String sku, String brand, int linqId) {
-
         String sql = """
             INSERT INTO products (avb_sku, avb_brand, linq_id)
             VALUES (?, ?, ?)
@@ -13,7 +18,6 @@ public class DatabaseService {
                 avb_brand = VALUES(avb_brand),
                 linq_id = VALUES(linq_id)
         """;
-
         jdbcTemplate.update(sql, sku, brand, linqId);
     }
 }

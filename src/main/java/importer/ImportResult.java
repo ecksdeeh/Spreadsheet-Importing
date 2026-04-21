@@ -1,4 +1,8 @@
 package importer;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class ImportResult {
     private int successCount;
     private List<String> errors = new ArrayList<>();

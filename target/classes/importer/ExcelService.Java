@@ -1,3 +1,11 @@
+package importer;
+
+import org.apache.poi.ss.usermodel.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import java.util.*;
+
 @Service
 public class ExcelService {
 
@@ -14,11 +22,9 @@ public class ExcelService {
 
         try (Workbook workbook = WorkbookFactory.create(file.getInputStream())) {
             Sheet sheet = workbook.getSheetAt(0);
-
             Row header = sheet.getRow(0);
             Map<String, Integer> columnIndex = mapColumns(header);
 
-            // Validate required columns
             for (String col : REQUIRED_COLUMNS) {
                 if (!columnIndex.containsKey(col)) {
                     result.addError("Missing column: " + col);
@@ -28,7 +34,6 @@ public class ExcelService {
 
             for (int i = 1; i <= sheet.getLastRowNum(); i++) {
                 Row row = sheet.getRow(i);
-
                 try {
                     String sku = getCell(row, columnIndex.get("SKU"));
                     String brand = getCell(row, columnIndex.get("Brand"));
@@ -40,13 +45,7 @@ public class ExcelService {
                     }
 
                     int linqId = Integer.parseInt(linqRaw.replace(",", ""));
-
-                    dbService.upsert(
-                        sku.trim(),
-                        brand.trim(),
-                        linqId
-                    );
-
+                    dbService.upsert(sku.trim(), brand.trim(), linqId);
                     result.incrementSuccess();
 
                 } catch (Exception e) {
