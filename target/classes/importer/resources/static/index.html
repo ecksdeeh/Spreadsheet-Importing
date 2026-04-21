@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Spreadsheet Importer</title>
+</head>
+<body>
+    <h2>Upload Spreadsheet</h2>
+
+    <form method="POST" action="/upload" enctype="multipart/form-data">
+    <input type="file" name="file" required />
+    <button type="submit">Import</button>
+</form>
+
+    <div>
+        <p th:text="${message}"></p>
+        <ul>
+            <li th:each="err : ${errors}" th:text="${err}"></li>
+        </ul>
+    </div>
+</body>
+</html>
