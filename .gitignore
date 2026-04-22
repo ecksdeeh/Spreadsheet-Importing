@@ -1,0 +1,21 @@
+# Application configuration (contains credentials - never commit this)
+src/main/resources/application.properties
+
+# Maven build output
+target/
+
+# VS Code
+.vscode/
+
+# Compiled Java classes
+*.class
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# IntelliJ IDEA (if anyone uses it)
+.idea/
+*.iml

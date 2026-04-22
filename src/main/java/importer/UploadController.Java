@@ -15,8 +15,12 @@ public class UploadController {
     @PostMapping("/upload")
     public String uploadFile(@RequestParam("file") MultipartFile file, Model model) {
         ImportResult result = excelService.processFile(file);
-        model.addAttribute("message", "Imported: " + result.getSuccessCount());
+
+        model.addAttribute("successCount", result.getSuccessCount());
         model.addAttribute("errors", result.getErrors());
+        model.addAttribute("hasErrors", !result.getErrors().isEmpty());
+        model.addAttribute("clean", result.getErrors().isEmpty() && result.getSuccessCount() > 0);
+
         return "index";
     }
 

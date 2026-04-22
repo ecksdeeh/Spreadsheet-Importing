@@ -1,21 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Spreadsheet Importer</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 0 20px; }
+        .success { background: #e6ffed; border: 1px solid #34a853; color: #1a7a34; padding: 12px 16px; border-radius: 6px; margin-top: 20px; }
+        .warning { background: #fff8e1; border: 1px solid #f9a825; color: #7a5800; padding: 12px 16px; border-radius: 6px; margin-top: 20px; }
+        .error-list { margin-top: 8px; padding-left: 20px; }
+        button { background: #1a73e8; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; margin-left: 10px; }
+        button:hover { background: #1557b0; }
+        input[type=file] { padding: 6px; }
+    </style>
 </head>
 <body>
-    <h2>Upload Spreadsheet</h2>
+    <h2>Spreadsheet Importer</h2>
 
     <form method="POST" action="/upload" enctype="multipart/form-data">
-    <input type="file" name="file" required />
-    <button type="submit">Import</button>
-</form>
+        <input type="file" name="file" accept=".xlsx" required />
+        <button type="submit">Import</button>
+    </form>
 
-    <div>
-        <p th:text="${message}"></p>
-        <ul>
+    <!-- Clean success: no errors -->
+    <div th:if="${clean != null and clean}" class="success">
+        ✅ Import complete — <span th:text="${successCount}"></span> records imported successfully with no errors.
+    </div>
+
+    <!-- Partial success: some records but with errors -->
+    <div th:if="${clean != null and not clean and successCount != null and successCount > 0}" class="warning">
+        ⚠️ Import complete — <span th:text="${successCount}"></span> records imported, but some rows had issues:
+        <ul class="error-list">
             <li th:each="err : ${errors}" th:text="${err}"></li>
         </ul>
     </div>
+
+    <!-- All failed -->
+    <div th:if="${clean != null and not clean and successCount != null and successCount == 0}" class="warning">
+        ❌ Import failed — no records were imported:
+        <ul class="error-list">
+            <li th:each="err : ${errors}" th:text="${err}"></li>
+        </ul>
+    </div>
+
 </body>
 </html>
