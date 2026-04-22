@@ -19,3 +19,5 @@ Thumbs.db
 # IntelliJ IDEA (if anyone uses it)
 .idea/
 *.iml
+#environment variables file (contains sensitive information - never commit this)
+.env
